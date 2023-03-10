@@ -27,8 +27,12 @@ zillow_dfs = [pd.read_csv(f) for f in zillow_files]
 #dataframe takes info for specific regions
 #if we doing entire us take [0] row otherwise you can go find regions like chicago, dallas, austin etc
 
-#reformat data to be each row as week and column is price it was sold
-zillow_dfs = [pd.DataFrame(df.iloc[0,5:]) for df in zillow_dfs]
+
+#reformat data to be each row as week and column is price it was sold --- changed first 3 to 0 
+zillow_dfs = [pd.DataFrame(df.iloc[3,5:]) for df in zillow_dfs]
+
+
+
 
 #combine house price (weekly) and house value (monthly) dataset togheter 
 #converts 
@@ -58,7 +62,7 @@ price_data["adj_price"] = price_data["price"] / price_data["cpi"] * 100
 #plot this adjusted house price that takes out inflation to see how house prices is changing without adjust for inflation
 price_data.plot.line(y="adj_price", use_index=True)
 
-price_data.to_csv("datasets/Housing_dataset.csv")
+price_data.to_csv("datasets/Housing_chicago_dataset.csv")
 
 
 
