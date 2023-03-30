@@ -54,13 +54,36 @@ price_data = fed_data.merge(price_data, left_index=True, right_index=True)
 
 price_data.columns = ["interest", "vaccancy", "cpi", "price", "value"]
 
-#plots price as y and x axis is dates
-price_data.plot.line(y="price", use_index=True)
 
+
+#adj price is taking inflation out of the house value -- it takes into account only the underlying value of house change over time (removing inflation from the change)
 price_data["adj_price"] = price_data["price"] / price_data["cpi"] * 100
 
-#plot this adjusted house price that takes out inflation to see how house prices is changing without adjust for inflation
-price_data.plot.line(y="adj_price", use_index=True)
+#adj zillow value for inflation
+price_data["adj_value"] = price_data["value"] / price_data["cpi"] * 100
+
+#want to predict what will happen to house prices in next 3 months
+#the shift grabs the adjusted price from 13 weeks into the future and sets that value as the next quarter for the price 3 months prior
+price_data["next_quarter"] = price_data["adj_price"].shift(-13)
+
+
+# we cant use the last 13 rows for training data becuase we dont have value for next quarter so we want to remove those rows
+price_data.dropna(inplace=True)
+
+#change will be target column because we want to predict 3 months in advance house price
+#will be 1 if true (price increase) and 0 if false (price decreased or didnt change)
+price_data["change"] = (price_data["next_quarter"] > price_data["adj_price"]).astype(int)
+
+#checking to ensure similar balance of counts 
+# print(price_data["change"].value_counts())
+
+
+# print(price_data)
+
+
+input_columns = ["interest", "vaccancy", "adju_price", "adj_value"]
+#if want to predict actual next_quarter value use next_quarter as target value
+target_column = ["change"]
 
 price_data.to_csv("datasets/Housing_chicago_dataset.csv")
 
