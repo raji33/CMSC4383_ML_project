@@ -15,3 +15,5 @@ In order to run, you must have 5 seperate files needed to create our custom data
 The ml_project.ipynb is a jupyter notebook that has code sectioned off based on various parts of the project.
 Each section is chronilogical so they need to be run in order otherwises errors will occur.
 Install required packages found in the requirements.txt file and the notebook code will run smoothly. 
+
+*Note*  There is an issue with keras library requiring tensorflow and specific version of python may not support tensorflow. If this issue persists here is the google colab link to run code: https://colab.research.google.com/drive/1gEqts0DTGBDMxm9sxgO5W0zqN7mU88wN?usp=sharing
